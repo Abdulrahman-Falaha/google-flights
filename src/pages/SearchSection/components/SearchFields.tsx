@@ -1,12 +1,12 @@
 import React, { useCallback, useState } from "react";
-import { FetchAiportReturnType } from "../../data/fetchAirports";
+import { FetchAiportReturnType } from "../../../data/fetchAirports";
 import { TravelClassType, TripType } from "./FilterActions";
-import FlightSearchField from "../../components/FlightSearchField";
-import DateField from "../../components/DateField";
+import FlightSearchField from "../../../components/reuseables/FlightSearchField";
+import DateField from "../../../components/reuseables/DateField";
 import { Search } from "lucide-react";
 import { cn } from "@udecode/cn";
-import fetchFlights, { FlightsResponse } from "../../data/fetchFlights";
-import CircularLoading from "../../assets/CircularLoading";
+import fetchFlights, { FlightsResponse } from "../../../data/fetchFlights";
+import CircularLoading from "../../../assets/CircularLoading";
 
 export default React.memo(SearchFields);
 

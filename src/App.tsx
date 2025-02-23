@@ -1,5 +1,5 @@
 // import { useState } from "react";
-import Flights from "./Flights";
+import Flights from "./pages/Flights";
 
 function App() {
   return (

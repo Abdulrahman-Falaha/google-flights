@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { FlightsResponse } from "../../data/fetchFlights";
-import FilterActions, { TravelClassType, TripType } from "./FilterActions";
-import SearchFields from "./SearchFields";
+import FilterActions, {
+  TravelClassType,
+  TripType,
+} from "./components/FilterActions";
+import SearchFields from "./components/SearchFields";
 
 export default React.memo(SearchSection);
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { FlightsResponse } from "../../data/fetchFlights";
-import FlightCard from "./FlightCard";
+import FlightCard from "./components/FlightCard";
 
 export default React.memo(FlightsSection);
 

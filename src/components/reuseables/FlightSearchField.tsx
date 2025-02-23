@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Plane, PlaneTakeoff, CheckCheck } from "lucide-react";
-import fetchAirports, { FetchAiportReturnType } from "../data/fetchAirports";
-import CircularLoading from "../assets/CircularLoading";
+import fetchAirports, { FetchAiportReturnType } from "../../data/fetchAirports";
+import CircularLoading from "../../assets/CircularLoading";
 
 export default React.memo(FlightSearchField);
 
@@ -61,7 +61,7 @@ function FlightSearchField(props: Props) {
       setOptionsMenu(true);
       setLoading(false);
     }, 300);
-  
+
     return () => {
       clearTimeout(handler);
     };
