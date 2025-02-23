@@ -37,6 +37,7 @@ function DateField(props: Props) {
         )}
         onChange={(e) => handleSelect(new Date(e.target.value))}
         value={props.date?.toISOString().split("T")[0]}
+        min={new Date().toISOString().split("T")[0]}
       />
     </div>
   );
