@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import {
   ArrowRightLeft,
   User,
@@ -13,26 +13,36 @@ export default React.memo(FilterActions);
 export type TravelClassType =
   | "economy"
   | "business"
-  | "firstClass"
-  | "premiumEconomy";
+  | "first"
+  | "premium_economy";
 export type TripType = "round" | "oneWay";
 
 interface Props {
   tripType: TripType;
   setTripType: (value: TripType) => void;
-  travelClass: TravelClassType;
+  travelClass: TravelClassType | undefined;
   setTravelClass: (value: TravelClassType) => void;
+  passengers: number;
+  setPassengers: (value: number) => void;
 }
 
 function FilterActions(props: Props) {
-  const { tripType, setTripType, travelClass, setTravelClass } = props;
+  const {
+    tripType,
+    setTripType,
+    travelClass,
+    setTravelClass,
+    passengers,
+    setPassengers,
+  } = props;
 
-  const travelClasses: { title: string; value: TravelClassType }[] = useMemo(
+  const travelClasses: { title: string; value: TravelClassType | undefined }[] = useMemo(
     () => [
       { title: "Economy", value: "economy" },
       { title: "Business", value: "business" },
-      { title: "First Class", value: "firstClass" },
-      { title: "Premium Economy", value: "premiumEconomy" },
+      { title: "First Class", value: "first" },
+      { title: "Premium Economy", value: "premium_economy" },
+      { title: "Any", value: undefined },
     ],
     []
   );
@@ -50,8 +60,6 @@ function FilterActions(props: Props) {
     title: `${num} ${num === 1 ? "passenger" : "passengers"}`,
     value: num,
   }));
-
-  const [passengers, setPassengers] = useState<number>(1);
 
   const currentNumberOfPassengers = sum(Object.values(passengers));
 
@@ -91,6 +99,7 @@ function FilterActions(props: Props) {
     travelClass,
     travelClasses,
     setTripType,
+    setPassengers,
     setTravelClass,
   ]);
 
@@ -104,15 +113,15 @@ function FilterActions(props: Props) {
             </div>
 
             <select
-              value={action.value.toString()}
+              value={action.value?.toString()}
               onChange={(e) => {
                 action.onClick(e.target.value);
               }}
               className="block cursor-pointer w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
-              {action.items?.map((item) => (
+              {action.items?.map((item, idx) => (
                 <option
-                  key={item.value}
+                  key={idx}
                   value={item.value}
                   className="px-2 py-1"
                 >

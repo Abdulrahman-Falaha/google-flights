@@ -1,18 +1,23 @@
 import React, { useCallback, useState } from "react";
 import { FetchAiportReturnType } from "../../data/fetchAirports";
-import { TripType } from "./FilterActions";
-import FlightSearchField from "./components/FlightSearchField";
-import DateField from "./components/DateField";
+import { TravelClassType, TripType } from "./FilterActions";
+import FlightSearchField from "../../components/FlightSearchField";
+import DateField from "../../components/DateField";
 import { Search } from "lucide-react";
+import { cn } from "@udecode/cn";
+import fetchFlights from "../../data/fetchFlights";
+import CircularLoading from "../../assets/CircularLoading";
 
 export default React.memo(SearchSection);
 
 interface Props {
   tripType: TripType;
+  travelClass: TravelClassType | undefined;
+  passengers: number;
 }
 
 function SearchSection(props: Props) {
-  const { tripType } = props;
+  const { tripType, passengers, travelClass } = props;
 
   const [selectedDepartureAirport, setSelectedDepartureAirport] = useState<
     FetchAiportReturnType | undefined
@@ -21,14 +26,46 @@ function SearchSection(props: Props) {
     FetchAiportReturnType | undefined
   >(undefined);
 
-  const [arrivalDate, setArrivalDate] = useState<Date | undefined>(undefined);
+  const [returnDate, setReturnDate] = useState<Date | undefined>(undefined);
   const [departureDate, setDepartureDate] = useState<Date | undefined>(
     undefined
   );
 
-  const handleFetchFlights = useCallback(() => {
-    console.log("Fetch Flights");
-  }, []);
+  const [loading, setLoading] = useState(false);
+
+  const handleFetchFlights = useCallback(async () => {
+    setLoading(true);
+
+    const results = await fetchFlights({
+      originSkyId: selectedDepartureAirport?.skyId || "",
+      originEntityId: selectedDepartureAirport?.entityId || "",
+      destinationEntityId: selectedArrivalAirport?.entityId || "",
+      destinationSkyId: selectedArrivalAirport?.skyId || "",
+      date: (departureDate || new Date()).toISOString().split("T")[0],
+      returnDate: returnDate?.toISOString().split("T")[0],
+      cabinClass: travelClass,
+      passengers: passengers,
+      tripType,
+    });
+
+    setLoading(false);
+    console.log({ zzzz: "Fetch Flights", results });
+  }, [
+    departureDate,
+    passengers,
+    returnDate,
+    selectedArrivalAirport?.entityId,
+    selectedArrivalAirport?.skyId,
+    selectedDepartureAirport?.entityId,
+    selectedDepartureAirport?.skyId,
+    travelClass,
+    tripType,
+  ]);
+
+  console.log({ selectedArrivalAirport, selectedDepartureAirport });
+
+  const isSearchButtonDisabled =
+    !selectedArrivalAirport || !selectedDepartureAirport || loading;
 
   return (
     <div className="flex flex-col gap-4 w-full">
@@ -48,14 +85,25 @@ function SearchSection(props: Props) {
         />
 
         <DateField
-          date={arrivalDate}
-          onSelect={setArrivalDate}
+          date={returnDate}
+          onSelect={setReturnDate}
           disabled={tripType === "oneWay"}
         />
       </div>
 
-      <button onClick={handleFetchFlights} disabled={!selectedArrivalAirport || !selectedDepartureAirport} className="absolute right-[50%] shadow-2xl -bottom-5 translate-x-1/2 hover:bg-blue-500 px-4 py-2 rounded-lg flex gap-2">
-        <Search />
+      <button
+        onClick={handleFetchFlights}
+        disabled={isSearchButtonDisabled}
+        className={cn(
+          "absolute right-[50%] shadow-2xl -bottom-5 translate-x-1/2  px-4 py-2 rounded-lg flex gap-2",
+          {
+            "bg-blue-500": !isSearchButtonDisabled,
+            "bg-gray-300 !border-0 text-gray-300/60 !cursor-auto":
+              isSearchButtonDisabled,
+          }
+        )}
+      >
+        {loading ? <CircularLoading className="text-blue-500"/> : <Search />}
         Search
       </button>
     </div>

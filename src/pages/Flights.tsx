@@ -9,7 +9,8 @@ export default React.memo(Flights);
 
 function Flights() {
   const [tripType, setTripType] = useState<TripType>("oneWay");
-  const [travelClass, setTravelClass] = useState<TravelClassType>("economy");
+  const [travelClass, setTravelClass] = useState<TravelClassType | undefined>("economy");
+  const [passengers, setPassengers] = useState(1);
 
   return (
     <div className="flex flex-col gap-10 w-full max-w-[1200px]">
@@ -33,8 +34,10 @@ function Flights() {
               setTripType={setTripType}
               travelClass={travelClass}
               setTravelClass={setTravelClass}
+              passengers={passengers || 1}
+              setPassengers={setPassengers}
             />
-            <SearchSection tripType={tripType} />
+            <SearchSection travelClass={travelClass} passengers={passengers} tripType={tripType} />
           </div>
         </div>
       </div>

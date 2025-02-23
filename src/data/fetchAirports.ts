@@ -6,24 +6,24 @@ export type FetchAiportReturnType = {
     entityId: string;
     entityType: string;
     localizedName: string;
-  };
-  relevantFlightParams: {
-    entityId: string;
-    flightPlaceType: string;
-    localizedName: string;
-    skyId: string;
-  };
-  relevantHotelParams: {
-    entityId: string;
-    entityType: string;
-    localizedName: string;
+    relevantFlightParams: {
+      entityId: string;
+      flightPlaceType: string;
+      localizedName: string;
+      skyId: string;
+    };
+    relevantHotelParams: {
+      entityId: string;
+      entityType: string;
+      localizedName: string;
+    };
   };
   presentation: {
     subtitle: string;
     suggestionTitle: string;
     title: string;
-    skyId: string;
   };
+  skyId: string;
 };
 
 

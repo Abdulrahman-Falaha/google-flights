@@ -1,8 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Plane, PlaneTakeoff, CheckCheck } from "lucide-react";
-import fetchAirports, {
-  FetchAiportReturnType,
-} from "../../../data/fetchAirports";
+import fetchAirports, { FetchAiportReturnType } from "../data/fetchAirports";
+import CircularLoading from "../assets/CircularLoading";
 
 export default React.memo(FlightSearchField);
 
@@ -22,6 +21,8 @@ function FlightSearchField(props: Props) {
     FetchAiportReturnType | undefined
   >(props.value);
   const [airports, setAirports] = useState<FetchAiportReturnType[]>([]);
+
+  const [loading, setLoading] = useState(false);
 
   const handleSelect = useCallback(
     (airport: FetchAiportReturnType) => {
@@ -45,7 +46,6 @@ function FlightSearchField(props: Props) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
   useEffect(() => {
     if (
       !searchValue ||
@@ -53,12 +53,18 @@ function FlightSearchField(props: Props) {
     )
       return;
 
-    setTimeout(async () => {
+    setLoading(true);
+    const handler = setTimeout(async () => {
       const result = await fetchAirports({ searchText: searchValue });
 
       setAirports(result);
       setOptionsMenu(true);
+      setLoading(false);
     }, 300);
+  
+    return () => {
+      clearTimeout(handler);
+    };
   }, [searchValue, selectedAirport?.presentation.suggestionTitle]);
 
   return (
@@ -66,6 +72,12 @@ function FlightSearchField(props: Props) {
       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
         <PlaneTakeoff className="h-5 w-5 text-gray-400" />
       </div>
+
+      {loading ? (
+        <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+          <CircularLoading />
+        </div>
+      ) : null}
 
       <input
         type="text"
