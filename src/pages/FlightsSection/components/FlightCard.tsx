@@ -1,5 +1,5 @@
 import { cn } from "@udecode/cn";
-import { Itinerary } from "../../data/fetchFlights";
+import { Itinerary } from "../../../data/fetchFlights";
 import React from "react";
 import moment from "moment";
 
