@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import SearchSection from "./SearchSection/SearchSection";
-import FilterActions, {
-  TravelClassType,
-  TripType,
-} from "./SearchSection/FilterActions";
+import FlightsSection from "./FlightsSection/FlightsSection";
+import { FlightsResponse } from "../data/fetchFlights";
 
 export default React.memo(Flights);
 
 function Flights() {
-  const [tripType, setTripType] = useState<TripType>("oneWay");
-  const [travelClass, setTravelClass] = useState<TravelClassType | undefined>("economy");
-  const [passengers, setPassengers] = useState(1);
+
+  const [flights, setFlights] = useState<FlightsResponse | undefined>(
+    undefined
+  );
 
   return (
     <div className="flex flex-col gap-10 w-full max-w-[1200px]">
@@ -23,22 +22,11 @@ function Flights() {
         <p className="text-6xl font-medium">Flights</p>
       </div>
 
-      {/* <button onClick={fetchFlights}>Click me</button> */}
-      {/* <SearchSection /> */}
-
       <div className="w-full pb-40">
-        <div className="container mx-auto px-4 py-8 bg-[#f8f9fa] ">
-          <div className="bg-white relative pb-12 px-4 pt-2 rounded-xl shadow-lg max-w-[900px] mx-auto flex flex-col gap-4">
-            <FilterActions
-              tripType={tripType}
-              setTripType={setTripType}
-              travelClass={travelClass}
-              setTravelClass={setTravelClass}
-              passengers={passengers || 1}
-              setPassengers={setPassengers}
-            />
-            <SearchSection travelClass={travelClass} passengers={passengers} tripType={tripType} />
-          </div>
+        <div className="container flex flex-col mx-auto px-4 py-8 bg-[#f8f9fa] gap-8">
+          <SearchSection setFlights={setFlights} />
+          
+          <FlightsSection flights={flights} />
         </div>
       </div>
     </div>

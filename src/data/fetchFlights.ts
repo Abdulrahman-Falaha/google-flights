@@ -25,9 +25,9 @@ type Carrier = {
 };
 
 type Leg = {
-  arrival: string;
+  arrival: Date;
   carriers: Carrier;
-  departure: string;
+  departure: Date;
   destination: Destination;
   durationInMinutes: number;
   id: string;
@@ -43,7 +43,7 @@ type Price = {
   pricingOptionId: string;
 };
 
-type Itinerary = {
+export type Itinerary = {
   fareAttributes: Record<string, unknown>;
   farePolicy: FarePolicy;
   hasFlexibleOptions: boolean;
@@ -60,7 +60,7 @@ type Itinerary = {
   tags: string[]
 };
 
-type ItinerariesResponse = {
+export type FlightsResponse = {
   itineraries: Itinerary[];
 };
 
@@ -74,7 +74,7 @@ export default async function fetchFlights(args: {
   cabinClass?: string;
   passengers?: number;
   tripType?: string;
-}): Promise<ItinerariesResponse> {
+}): Promise<FlightsResponse> {
   try {
     const {
       originSkyId,
@@ -122,7 +122,7 @@ export default async function fetchFlights(args: {
 
     const result = await response.json();
 
-    return result.data.itineraries;
+    return result.data;
   } catch (err) {
     throw new Error(`An Error has occured ${err}`);
   }
