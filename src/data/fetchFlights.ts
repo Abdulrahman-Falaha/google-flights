@@ -1,26 +1,120 @@
-// const API_URL = "https://api.thecatapi.com/v1/images/search?limit=10"
+import fetchingOptions from "./fetchingOptions";
 
-const options = {
-  method: "GET",
-  headers: {
-    "x-rapidapi-host": "sky-scrapper.p.rapidapi.com",
-    "x-rapidapi-key": "73362f1317msh3a28796fedcf8bbp170adcjsnd7eb144ded6f",
-  },
+type FarePolicy = {
+  isChangeAllowed: boolean;
+  isPartiallyChangeable: boolean;
+  isCancellationAllowed: boolean;
+};
+
+type Destination = {
+  city: string;
+  country: string;
+  displayCode: string;
+  entityId: string;
+  id: string;
+  isHighlighted: boolean;
+  name: string;
+};
+
+type Origin = Destination;
+
+type Carrier = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  marketing: any[];
+  operationType: string;
+};
+
+type Leg = {
+  arrival: string;
+  carriers: Carrier;
+  departure: string;
+  destination: Destination;
+  durationInMinutes: number;
+  id: string;
+  isSmallestStops: boolean;
+  origin: Origin;
+  stopCount: number;
+  timeDeltaInDays: number;
+};
+
+type Price = {
+  raw: number;
+  formatted: string;
+  pricingOptionId: string;
+};
+
+type Itinerary = {
+  fareAttributes: Record<string, unknown>;
+  farePolicy: FarePolicy;
+  hasFlexibleOptions: boolean;
+  id: string;
+  isMashUp: boolean;
+  isProtectedSelfTransfer: boolean;
+  isSelfTransfer: boolean;
+  legs: Leg[];
+  segments: Record<string, unknown>;
+  price: Price;
+  score: number;
+  arrival: Date;
+  departure: Date;
+  tags: string[]
+};
+
+type ItinerariesResponse = {
+  itineraries: Itinerary[];
 };
 
 export default async function fetchFlights(args: {
   originSkyId: string;
-  destinationSkyId?: string;
-}) {
+  originEntityId: string;
+  destinationSkyId: string;
+  destinationEntityId: string;
+  date: string;
+  returnDate?: string;
+  cabinClass?: string;
+  passengers?: number;
+  tripType?: string;
+}): Promise<ItinerariesResponse> {
   try {
-    const { originSkyId, destinationSkyId } = args;
+    const {
+      originSkyId,
+      destinationSkyId,
+      cabinClass,
+      passengers,
+      originEntityId,
+      destinationEntityId,
+      date,
+      returnDate,
+      tripType,
+    } = args;
 
-    'https://sky-scrapper.p.rapidapi.com/api/v2/flights/searchFlightsComplete?originSkyId=LOND&destinationSkyId=NYCA&originEntityId=27544008&destinationEntityId=27537542&cabinClass=economy&adults=1&sortBy=best&currency=USD&market=en-US&countryCode=US' 
+    const getFlightsApiUrl = new URL(
+      "https://sky-scrapper.p.rapidapi.com/api/v2/flights/searchFlightsComplete"
+    );
 
-  const getFlightsApiUrl =
-      "https://sky-scrapper.p.rapidapi.com/api/v2/flights/searchFlights?originSkyId=LOND&destinationSkyId=NYCA&originEntityId=27544008&destinationEntityId=27537542&cabinClass=economy&adults=1&sortBy=best&currency=USD&market=en-US&countryCode=US";
+    const params = {
+      originSkyId,
+      destinationSkyId,
+      originEntityId,
+      destinationEntityId,
+      date,
+      returnDate,
+      adults: passengers,
+      tripType,
+      cabinClass,
+      sortBy: "best",
+      currency: "USD",
+      market: "en-US",
+      countryCode: "US",
+    };
 
-    const response = await fetch(getFlightsApiUrl, options);
+    Object.entries(params).forEach(([key, value]) =>
+      value
+        ? getFlightsApiUrl.searchParams.append(key, value.toLocaleString())
+        : null
+    );
+
+    const response = await fetch(getFlightsApiUrl, fetchingOptions);
 
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -28,7 +122,7 @@ export default async function fetchFlights(args: {
 
     const result = await response.json();
 
-    return result;
+    return result.data.itineraries;
   } catch (err) {
     throw new Error(`An Error has occured ${err}`);
   }
