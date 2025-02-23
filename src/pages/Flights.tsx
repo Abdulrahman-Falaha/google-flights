@@ -6,12 +6,9 @@ import { FlightsResponse } from "../data/fetchFlights";
 export default React.memo(Flights);
 
 function Flights() {
-
   const [flights, setFlights] = useState<FlightsResponse | undefined>(
     undefined
   );
-
-  
 
   return (
     <div className="flex flex-col gap-10 w-full max-w-[1200px]">
@@ -27,7 +24,7 @@ function Flights() {
       <div className="w-full pb-40">
         <div className="container flex flex-col mx-auto px-4 py-8 bg-[#f8f9fa] gap-8">
           <SearchSection setFlights={setFlights} />
-          
+
           <FlightsSection flights={flights} />
         </div>
       </div>
