@@ -6,24 +6,24 @@ import moment from "moment";
 export default React.memo(FlightCard);
 
 interface Props {
-  flight: Itinerary;
+  itinerary: Itinerary;
 }
 
 function FlightCard(props: Props) {
-  const { flight } = props;
+  const { itinerary } = props;
 
   return (
     <div className="flex flex-col w-full">
-      {flight.legs.map((leg, index) => (
+      {itinerary.legs.map((leg, index) => (
         <div
           key={index}
           className={cn(
             "grid sm:grid-cols-4 grid-cols-2 gap-4 justify-between p-6 rounded-2xl border border-gray-700",
             {
               "border-b-2 rounded-b-none":
-                index === 0 && flight.legs.length > 1,
+                index === 0 && itinerary.legs.length > 1,
               "border-b-2 rounded-t-none":
-                index === 1 && flight.legs.length > 1,
+                index === 1 && itinerary.legs.length > 1,
             }
           )}
         >
@@ -69,7 +69,7 @@ function FlightCard(props: Props) {
           </div>
 
           <div className="flex flex-col gap-1 justify-self-end self-end sm:self-start font-bold text-2xl">
-            {flight.price.formatted}
+            {itinerary.price.formatted}
           </div>
         </div>
       ))}

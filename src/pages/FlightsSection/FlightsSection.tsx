@@ -72,8 +72,8 @@ function FlightsSection(props: Props) {
               <option value="arrivalTime">Arrival Time</option>
             </select>
           </div>
-          {sortedItineraries?.map((flight, index) => (
-            <FlightCard key={index} flight={flight} />
+          {sortedItineraries?.map((itinerary, index) => (
+            <FlightCard key={index} itinerary={itinerary} />
           ))}
         </div>
       )}
