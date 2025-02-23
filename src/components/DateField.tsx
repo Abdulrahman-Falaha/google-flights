@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { Calendar } from "lucide-react";
 import React from "react";
+import { cn } from "@udecode/cn";
 
 interface Props {
   date?: Date;
@@ -28,7 +29,12 @@ function DateField(props: Props) {
       <input
         type="date"
         disabled={disabled}
-        className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        className={cn(
+          "block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
+          {
+            "bg-gray-100/60 text-gray-600/40": disabled,
+          }
+        )}
         onChange={(e) => handleSelect(new Date(e.target.value))}
         value={props.date?.toISOString().split("T")[0]}
       />
