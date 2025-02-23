@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { FetchAiportReturnType } from "../../../data/fetchAirports";
+import { FetchAiportResponseType } from "../../../data/fetchAirports";
 import { TravelClassType, TripType } from "./FilterActions";
 import FlightSearchField from "../../../components/reuseables/FlightSearchField";
 import DateField from "../../../components/reuseables/DateField";
@@ -21,10 +21,10 @@ function SearchFields(props: Props) {
   const { tripType, passengers, travelClass, setFlights } = props;
 
   const [selectedDepartureAirport, setSelectedDepartureAirport] = useState<
-    FetchAiportReturnType | undefined
+    FetchAiportResponseType | undefined
   >(undefined);
   const [selectedArrivalAirport, setSelectedArrivalAirport] = useState<
-    FetchAiportReturnType | undefined
+    FetchAiportResponseType | undefined
   >(undefined);
 
   const [returnDate, setReturnDate] = useState<Date | undefined>(undefined);

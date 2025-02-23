@@ -1,13 +1,15 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Plane, PlaneTakeoff, CheckCheck } from "lucide-react";
-import fetchAirports, { FetchAiportReturnType } from "../../data/fetchAirports";
+import fetchAirports, {
+  FetchAiportResponseType,
+} from "../../data/fetchAirports";
 import CircularLoading from "../../assets/CircularLoading";
 
 export default React.memo(FlightSearchField);
 
 interface Props {
-  value?: FetchAiportReturnType;
-  onSelect: (airport: FetchAiportReturnType) => void;
+  value?: FetchAiportResponseType;
+  onSelect: (airport: FetchAiportResponseType) => void;
 }
 
 function FlightSearchField(props: Props) {
@@ -18,14 +20,14 @@ function FlightSearchField(props: Props) {
   const [optionsMenu, setOptionsMenu] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [selectedAirport, setSelectedAirport] = useState<
-    FetchAiportReturnType | undefined
+    FetchAiportResponseType | undefined
   >(props.value);
-  const [airports, setAirports] = useState<FetchAiportReturnType[]>([]);
+  const [airports, setAirports] = useState<FetchAiportResponseType[]>([]);
 
   const [loading, setLoading] = useState(false);
 
   const handleSelect = useCallback(
-    (airport: FetchAiportReturnType) => {
+    (airport: FetchAiportResponseType) => {
       setSelectedAirport(airport);
       setSearchValue(airport.presentation.suggestionTitle);
       setOptionsMenu(false);

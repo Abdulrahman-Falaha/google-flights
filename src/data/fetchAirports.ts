@@ -1,6 +1,6 @@
 import fetchingOptions from "./fetchingOptions";
 
-export type FetchAiportReturnType = {
+export type FetchAiportResponseType = {
   entityId: string;
   navigation: {
     entityId: string;
@@ -26,8 +26,9 @@ export type FetchAiportReturnType = {
   skyId: string;
 };
 
-
-export default async function fetchAirports(args: { searchText: string }): Promise<FetchAiportReturnType[]> {
+export default async function fetchAirports(args: {
+  searchText: string;
+}): Promise<FetchAiportResponseType[]> {
   try {
     const { searchText } = args;
 
