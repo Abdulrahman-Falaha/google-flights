@@ -11,6 +11,8 @@ function Flights() {
     undefined
   );
 
+  
+
   return (
     <div className="flex flex-col gap-10 w-full max-w-[1200px]">
       <div className="flex flex-col w-full items-center">
